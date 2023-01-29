@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "user")
 public class User {
 
     @Id
@@ -23,24 +24,22 @@ public class User {
     @Column(name = "user_pwd")
     private String userPassword;
 
-    @Column(name = "isActive")
+    @Column(name = "user_is_active")
     private Boolean userIsActive;
 
-
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name = "role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> userRole;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     public User(){}
 
-    public User(Integer userId, String userName, String userEmail, String userRealName, String userPassword, Boolean userIsActive, Set<Role> userRole) {
-        this.userId = userId;
+    public User(String userName, String userEmail, String userRealName, String userPassword, Boolean userIsActive, Role role) {
         this.userName = userName;
         this.userEmail = userEmail;
         this.userRealName = userRealName;
         this.userPassword = userPassword;
         this.userIsActive = userIsActive;
-        this.userRole = userRole;
+        this.role = role;
     }
 
     public Integer getUserId() {
@@ -91,12 +90,12 @@ public class User {
         this.userIsActive = userIsActive;
     }
 
-    public Set<Role> getUserRole() {
-        return userRole;
+    public Role getRole() {
+        return role;
     }
 
-    public void setUserRole(Set<Role> userRole) {
-        this.userRole = userRole;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
@@ -108,7 +107,7 @@ public class User {
                 ", userRealName='" + userRealName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
                 ", userIsActive=" + userIsActive +
-                ", userRole=" + userRole +
+                ", role=" + role +
                 '}';
     }
 }

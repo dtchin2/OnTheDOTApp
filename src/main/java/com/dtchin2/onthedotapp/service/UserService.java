@@ -8,24 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
 @Service
 public class UserService {
 
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private RoleRepository roleRepository;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository,
-                       RoleRepository roleRepository,
-                       BCryptPasswordEncoder bCryptPasswordEncoder){
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
+//    @Autowired
+//    public UserService(UserRepository userRepository,
+//                       RoleRepository roleRepository,
+//                       BCryptPasswordEncoder bCryptPasswordEncoder){
+//        this.userRepository = userRepository;
+//        this.roleRepository = roleRepository;
+//        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+//    }
 
     public User findUserByEmail(String userEmail){
         return userRepository.findByUserEmail(userEmail);
@@ -39,7 +42,7 @@ public class UserService {
         user.setUserPassword(bCryptPasswordEncoder.encode(user.getUserPassword()));
         user.setUserIsActive(true);
         Role userRole = roleRepository.findRoleByRoleName("OWNER");
-        user.setUserRole(new HashSet<Role>(Arrays.asList(userRole)));
+        user.setRole(userRole);
         return userRepository.save(user);
     }
 }

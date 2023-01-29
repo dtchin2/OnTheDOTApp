@@ -1,8 +1,11 @@
 package com.dtchin2.onthedotapp.entity;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
+@Table(name = "role")
 public class Role {
 
     @Id
@@ -12,6 +15,9 @@ public class Role {
 
     @Column(name = "role_name")
     private String roleName;
+
+    @OneToMany(mappedBy = "role")
+    private List<User> users;
 
     public Role(){}
 
@@ -34,6 +40,14 @@ public class Role {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override
